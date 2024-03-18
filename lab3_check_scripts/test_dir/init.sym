@@ -1,0 +1,16 @@
+00000000 init.c
+00000000 printf.c
+0000012a putc
+0000014d printint
+00000500 digits.0
+000001fe printf
+0000011a set_sched_policy
+000000fa write
+0000010a exec
+00000511 __bss_start
+00000000 main
+00000511 _edata
+00000514 _end
+00000112 open
+00000122 get_sched_policy
+00000102 close
