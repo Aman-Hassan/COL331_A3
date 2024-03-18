@@ -6,7 +6,7 @@ OBJS = Button.o collision.o Game.o main.o MainMenu.o MessageStructs.o MyTexture.
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
-COMPILER_FLAGS = 
+COMPILER_FLAGS = -g -O0
 
 #LINKER_FLAGS specifies the libraries we're linking against
 LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer

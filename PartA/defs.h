@@ -125,6 +125,10 @@ int             fetchint(uint, int*);
 int             fetchstr(uint, char**);
 void            syscall(void);
 
+// sysproc.c
+int             sys_set_sched_policy(void);
+int             sys_get_sched_policy(void);
+
 // trap.c
 void            idtinit(void);
 extern uint     ticks;

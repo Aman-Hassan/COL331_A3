@@ -105,6 +105,7 @@ pinit(int pol)
   p->cwd = namei("/");
 
   p->state = RUNNABLE;
+  p->policy = pol;
 }
 
 // process scheduler.
@@ -113,29 +114,82 @@ pinit(int pol)
 //  - swtch to start running that process
 //  - eventually that process transfers control
 //      via swtch back to the scheduler.
+// void
+// scheduler(void)
+// {
+//   struct proc *p;
+//   struct cpu *c = mycpu();
+//   c->proc = 0;
+  
+//   for(;;){
+//     // Enable interrupts on this processor.
+//     sti();
+
+//     // Loop over process table looking for process to run.
+//     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+//       if(p->state != RUNNABLE)
+//         continue;
+
+//       // Switch to chosen process. 
+//       c->proc = p;
+//       p->state = RUNNING;
+
+//       switchuvm(p);
+//       swtch(&(c->scheduler), p->context);
+//     }
+//   }
+// }
+
 void
 scheduler(void)
 {
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
-  
-  for(;;){
-    // Enable interrupts on this processor.
+  int fg_run = 0;
+  int bg_run = 0;
+  struct proc *fg_queue[NPROC];
+  struct proc *bg_queue[NPROC];
+  int fg_index = 0;
+  int bg_index = 0;
+
+  for (;;){
+  // Enable interrupts on this processor.
     sti();
 
-    // Loop over process table looking for process to run.
+    // Loop over process table looking for process to run and add to respective queues.
+    int fg_count = 0;
+    int bg_count = 0;
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
         continue;
 
-      // Switch to chosen process. 
-      c->proc = p;
-      p->state = RUNNING;
-
-      switchuvm(p);
-      swtch(&(c->scheduler), p->context);
+      if(p->policy == 0){
+        fg_queue[fg_count % NPROC] = p;
+        fg_count++;
+      } else {
+        bg_queue[bg_count % NPROC] = p;
+        bg_count++;
+      }
     }
+
+    if(fg_count > 0 && (bg_count == 0 || fg_run < 9 || (bg_run > 0 && fg_run < 9 * bg_run))){ // there is a fg process to run and either fg has not run 9 times or there is no bg process to run or fg has run less than 9 times bg has run
+      p = fg_queue[fg_index % fg_count];
+      fg_index = (fg_index + 1) % fg_count;
+      fg_run++;
+    } else if(bg_count > 0){
+      p = bg_queue[bg_index % bg_count];
+      bg_index = (bg_index + 1) % bg_count;
+      bg_run++;
+    } else {
+      continue;
+    }
+
+    c->proc = p;
+    p->state = RUNNING;
+
+    switchuvm(p);
+    swtch(&(c->scheduler), p->context);
   }
 }
 

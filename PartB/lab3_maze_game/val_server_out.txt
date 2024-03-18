@@ -1,0 +1,108 @@
+==263720== Memcheck, a memory error detector
+==263720== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==263720== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==263720== Command: ./server/server.out
+==263720== Parent PID: 145764
+==263720== 
+==263720== Conditional jump or move depends on uninitialised value(s)
+==263720==    at 0x10C349: deserialize(char*) (MessageStructs.cpp:110)
+==263720==    by 0x10A7A3: main (server.cpp:69)
+==263720==  Uninitialised value was created by a stack allocation
+==263720==    at 0x10A5F2: main (server.cpp:16)
+==263720== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:_Z11deserializePc
+   fun:main
+}
+==263720== Use of uninitialised value of size 8
+==263720==    at 0x10C361: deserialize(char*) (MessageStructs.cpp:110)
+==263720==    by 0x10A7A3: main (server.cpp:69)
+==263720==  Uninitialised value was created by a stack allocation
+==263720==    at 0x10A5F2: main (server.cpp:16)
+==263720== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   fun:_Z11deserializePc
+   fun:main
+}
+==263720== Conditional jump or move depends on uninitialised value(s)
+==263720==    at 0x484ED19: strlen (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==263720==    by 0x10C40E: deserialize(char*) (MessageStructs.cpp:134)
+==263720==    by 0x10A7A3: main (server.cpp:69)
+==263720==  Uninitialised value was created by a stack allocation
+==263720==    at 0x10A5F2: main (server.cpp:16)
+==263720== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:strlen
+   fun:_Z11deserializePc
+   fun:main
+}
+==263720== Conditional jump or move depends on uninitialised value(s)
+==263720==    at 0x484ED28: strlen (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==263720==    by 0x10C40E: deserialize(char*) (MessageStructs.cpp:134)
+==263720==    by 0x10A7A3: main (server.cpp:69)
+==263720==  Uninitialised value was created by a stack allocation
+==263720==    at 0x10A5F2: main (server.cpp:16)
+==263720== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:strlen
+   fun:_Z11deserializePc
+   fun:main
+}
+==263720== 
+==263720== Process terminating with default action of signal 2 (SIGINT)
+==263720==    at 0x4BDB72A: recvfrom (recvfrom.c:27)
+==263720==    by 0x10A78E: main (server.cpp:65)
+==263720== 
+==263720== HEAP SUMMARY:
+==263720==     in use at exit: 72,752 bytes in 2 blocks
+==263720==   total heap usage: 2 allocs, 0 frees, 72,752 bytes allocated
+==263720== 
+==263720== 48 bytes in 1 blocks are still reachable in loss record 1 of 2
+==263720==    at 0x4849013: operator new(unsigned long) (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==263720==    by 0x10C3EB: deserialize(char*) (MessageStructs.cpp:132)
+==263720==    by 0x10A7A3: main (server.cpp:69)
+==263720== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:_Znwm
+   fun:_Z11deserializePc
+   fun:main
+}
+==263720== 72,704 bytes in 1 blocks are still reachable in loss record 2 of 2
+==263720==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==263720==    by 0x4912939: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==263720==    by 0x400647D: call_init.part.0 (dl-init.c:70)
+==263720==    by 0x4006567: call_init (dl-init.c:33)
+==263720==    by 0x4006567: _dl_init (dl-init.c:117)
+==263720==    by 0x40202C9: ??? (in /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2)
+==263720== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30
+   fun:call_init.part.0
+   fun:call_init
+   fun:_dl_init
+   obj:/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+}
+==263720== LEAK SUMMARY:
+==263720==    definitely lost: 0 bytes in 0 blocks
+==263720==    indirectly lost: 0 bytes in 0 blocks
+==263720==      possibly lost: 0 bytes in 0 blocks
+==263720==    still reachable: 72,752 bytes in 2 blocks
+==263720==         suppressed: 0 bytes in 0 blocks
+==263720== 
+==263720== For lists of detected and suppressed errors, rerun with: -s
+==263720== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 0 from 0)
